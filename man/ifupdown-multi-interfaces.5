@@ -1,0 +1,157 @@
+.\" Man page generated from reStructuredText.
+.
+.TH IFUPDOWN-MULTI-INTERFACES 5 "17 September 2013" "0.1.0" "File formats"
+.SH NAME
+ifupdown-multi-interfaces \- ifupdown-multi extension for the interfaces(5) file format
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+\fI/etc/network/interfaces\fP contains network interface information for the
+\fBifup\fP(8) and \fBifdown\fP(8) commands. This manpage describes the
+\fBifupdown\-multi\fP extensions to the the standard \fBinterfaces\fP(5) file
+format.
+.sp
+The \fBifupdown\-multi\fP extensions to \fBifupdown\fP integrate Linux\(aqs policy
+routing based support for multiple default gateways on independent network
+connections. These extensions can replace a typical shell script based approach
+that directly invokes a sequence of \fBip\fP(8) commands for configuring
+multiple uplinks with declarative syntax in the \fI/etc/network/interfaces\fP file.
+.sp
+\fBifupdown\-multi\fP records the policy information used to bring up each network
+interface when \fBifup\fP(8) is run and removes the same policy routing
+information when \fBifdown\fP(8) is run.
+.SH IFACE OPTIONS
+.sp
+The standard \fBaddress\fP and \fBnetmask\fP options must be set for each
+interface. The \fBgateway\fP option must \fINOT\fP be set.
+.sp
+The new \fBmulti_gateway\fP and \fBmulti_table\fP options must be set to configure
+policy routing with \fBifupdown\-multi\fP\&.
+.sp
+Additionally, the \fBmulti_gateway_weight\fP and \fBmulti_preferred_prefixes\fP
+options can be specified in order to control optional policy routing features.
+.INDENT 0.0
+.TP
+.B \fBmulti_gateway\fP \fIaddress\fP
+Default gateway for this interface. (Required.)
+.TP
+.B \fBmulti_table\fP \fIid\fP
+Table identifier. This must be a numeric value, and each interface must have a
+unique value. Recommended range: 1\-1000. (Required.)
+.TP
+.B \fBmulti_gateway_weight\fP \fIweight\fP
+Set this gateway\(aqs weight. This value is directly passed as the \fIweight\fP
+parameter to the \fInexthop\fP part of an \fBip\-route\fP(8) route object. Higher
+values indicate higher relative bandwidth or quality. (Optional.)
+.TP
+.B \fBmulti_preferred_prefixes\fP \fIprefix\fP [\fIprefix\fP]...
+Prefer this connection for the given prefixes. This option configures the
+routing policy database using the \fBip\-rule\fP(8) command to use this
+connection for the specified prefixes. (Optional.)
+.UNINDENT
+.SH EXAMPLES
+.sp
+The following example shows a basic configuration with two network interfaces.
+\fIeth0\fP is on the 198.51.100.0/24 network, while \fIeth1\fP is on the 203.0.113.0/24
+network. Each interface stanza has a "multi_gateway" option, as opposed to the
+usual "gateway" option. Each interface stanza also needs a "multi_table" option,
+whose parameter is a small, unique non\-negative integer.  (This number will be
+used internally to uniquely identify an interface\-specific routing table.)
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+auto eth0
+iface eth0 inet static
+    address 198.51.100.123
+    netmask 255.255.255.0
+    multi_table 1
+    multi_gateway 198.51.100.1
+
+auto eth1
+iface eth1 inet static
+    address 203.0.113.234
+    netmask 255.255.255.0
+    multi_table 2
+    multi_gateway 203.0.113.1
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following example shows a more complicated setup using optional
+\fBifupdown\-multi\fP parameters. It is similar to the first example, but the
+network connection on \fIeth0\fP is preferred for most connections, and several
+network prefixes prefer to use one or the other network connection.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+auto eth0
+iface eth0 inet static
+    address 198.51.100.123
+    netmask 255.255.255.0
+    multi_table 1
+    multi_gateway 198.51.100.1
+    multi_gateway_weight 5
+    multi_preferred_prefixes 10.0.0.0/8
+
+auto eth1
+iface eth1 inet static
+    address 203.0.113.234
+    netmask 255.255.255.0
+    multi_table 2
+    multi_gateway 203.0.113.1
+    multi_gateway_weight 1
+    multi_preferred_prefixes 172.16.0.0/12 192.168.0.0/16
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH FILES
+.INDENT 0.0
+.TP
+.B \fI/etc/network/interfaces\fP
+System\-wide network interface configuration. See \fBinterfaces\fP(5).
+.TP
+.B \fI/var/run/network/ifupdown\-multi.*\fP
+State information used by \fBifupdown\-multi\fP\&.
+.UNINDENT
+.SH SEE ALSO
+.sp
+\fBinterfaces\fP(5), \fBifup\fP(8), \fBip\fP(8), \fBip\-route\fP(8), \fBip\-rule\fP(8).
+.INDENT 0.0
+.TP
+.B Linux Advanced Routing & Traffic Control HOWTO \-\- Chapter 4: Rules.
+\fI\%http://www.tldp.org/HOWTO/Adv\-Routing\-HOWTO/lartc.rpdb.html\fP
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.
