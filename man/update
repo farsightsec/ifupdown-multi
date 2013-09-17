@@ -1,0 +1,3 @@
+#!/bin/sh -e
+rm -f ifupdown-multi-interfaces.5
+rst2man ifupdown-multi-interfaces.5.rst > ifupdown-multi-interfaces.5
