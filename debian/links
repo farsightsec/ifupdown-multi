@@ -1,0 +1,2 @@
+usr/lib/ifupdown-multi.py etc/network/if-up.d/ifupdown-multi
+usr/lib/ifupdown-multi.py etc/network/if-down.d/ifupdown-multi
