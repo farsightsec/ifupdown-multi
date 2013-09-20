@@ -48,7 +48,10 @@ priority_magic = 31047
 
 def run(cmd):
     logging.debug('running command %r', cmd)
-    return subprocess.call(cmd, shell=True)
+    rc = subprocess.call(cmd, shell=True)
+    if rc != 0:
+        logging.critical('command %r failed with exit code %d', cmd, rc)
+    return rc
 
 class ifupdownMulti:
     def __init__(self, env):
