@@ -42,8 +42,8 @@ fname_rules = fname_prefix + '%(IFACE)s.rules.%(ADDRFAM)s'
 
 glob_nexthop = fname_prefix + '*.nexthop.%(ADDRFAM)s'
 
-priority_magic_preferred = 25357
-priority_magic = 31047
+priority_magic = 25357
+priority_magic_preferred = 31047
 
 def run(cmd):
     logging.debug('running command %r', cmd)
