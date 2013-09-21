@@ -27,7 +27,6 @@ required_keys = (
     'ADDRFAM',
     'IFACE',
     'IF_ADDRESS',
-    'IF_NETMASK',
     'IF_MULTI_TABLE',
     'IF_MULTI_GATEWAY',
 )
