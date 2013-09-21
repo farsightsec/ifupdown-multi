@@ -39,7 +39,7 @@ additional_keys = (
 
 fname_prefix = '/var/run/network/ifupdown-multi.'
 fname_nexthop = fname_prefix + '%(IFACE)s.nexthop.%(ADDRFAM)s'
-fname_rules = fname_prefix + '%(IFACE)s.rules'
+fname_rules = fname_prefix + '%(IFACE)s.rules.%(ADDRFAM)s'
 
 glob_nexthop = fname_prefix + '*.nexthop.%(ADDRFAM)s'
 
