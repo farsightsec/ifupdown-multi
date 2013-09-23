@@ -3,7 +3,7 @@ ifupdown-multi
 
 `ifupdown-multi` integrates support for multiple default gateways on independent
 network connections into the Debian `ifupdown` network interface configuration
-system. It adds new `multi_*` options to the `/etc/network/interface` file
+system. It adds new `multi_*` options to the `/etc/network/interfaces` file
 format in order to more easily configure Linux's policy based routing.
 
 The policy information used to configure each network interface using
