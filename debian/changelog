@@ -1,5 +1,5 @@
-ifupdown-multi (0.1.0) UNRELEASED; urgency=low
+ifupdown-multi (0.1.0) unstable; urgency=low
 
-  * Initial release. (Closes: #XXXXXX)
+  * Initial release. (Closes: #724452)
 
- -- Robert S. Edmonds <edmonds@debian.org>  Tue, 17 Sep 2013 21:34:03 -0400
+ -- Robert S. Edmonds <edmonds@debian.org>  Mon, 23 Sep 2013 20:54:49 -0400
