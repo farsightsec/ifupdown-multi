@@ -53,8 +53,16 @@ def run(cmd):
         logging.critical('command %r failed with exit code %d', cmd, rc)
     return rc
 
+def mkdir(dname):
+    if not os.path.isdir(dname):
+        rc = run('mkdir %s' % dname)
+        if rc != 0:
+            raise Exception, 'unable to create directory %s' % dname
+
 class ifupdownMulti:
     def __init__(self, env):
+        mkdir('/var/run/network')
+
         self.cfg = {}
         for key in required_keys:
             if env.has_key(key):
