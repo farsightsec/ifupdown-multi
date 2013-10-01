@@ -54,8 +54,8 @@ attached to two Internet providers.
 Caveats
 -------
 
-+ Do not specify a prefix in `multi_gateway_prefixes` that overlaps one of the
-subnets directly attached to the host.
++ Do not specify a prefix in `multi_gateway_preferred_prefixes` that overlaps
+one of the subnets directly attached to the host.
 
 + IPv6 is supported, but it is implemented in a slightly different way than
 IPv4. The `multi_gateway_weight` option is not supported for IPv6 gateways.
